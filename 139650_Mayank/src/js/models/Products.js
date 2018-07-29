@@ -41,10 +41,12 @@ export default class Products {
     }
 
     // get product by product id 
-    getProductByProductId(productId) {
-        return this.result.find(item => {
-            return item.ID == productId;
-        });
+     getProductByProductId(productId) {
+        if(this.result!=null){
+            return this.result.find(item => {
+                return item.ID == productId;
+            });
+        }
     }
 
 }

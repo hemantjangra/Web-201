@@ -45,7 +45,7 @@ const controlSearch = async () => {
             clearLoader();
 
         } catch (err) {
-            alert('Something wrong with the search...');
+            console.log('Something wrong with the search...');
             clearLoader();
         }
     }
@@ -141,7 +141,7 @@ const bindEvent = () => {
 }
 
 // insert/update data by product in the local storage
-const storeDataByProductId = (element, quantity) => {
+const storeDataByProductId = async (element, quantity) => {
     let productId, isCartItem = false;
     try {
         // store data in local storage per product id
@@ -153,8 +153,13 @@ const storeDataByProductId = (element, quantity) => {
             productId = $(element).parents('.cart-items__list').attr('id');
             isCartItem = true;
         }
-        const cartProduct = state.products.getProductByProductId(productId);
-        state.cart.addItem(cartProduct, quantity, productId);
+        if (productId != null) {
+            if (state.products == null || state.products.length > 0) {
+                await state.products.getAllProducts();
+            }
+            let cartProduct = state.products.getProductByProductId(productId);
+            state.cart.addItem(cartProduct, quantity, productId);
+        }
 
         if (isCartItem) {
             const cartItem = $(element).parents('.cart-items__list');
@@ -172,7 +177,7 @@ const storeDataByProductId = (element, quantity) => {
         updateCartNotification();
     }
     catch (error) {
-        console.log(`storeDataByProductId : Index.js :${error}`);
+        console.log(`Index :storeDataByProductId:${error}`);
     }
 }
 
@@ -221,7 +226,7 @@ $(document).on("click", '.btn-quantity__add', function () {
 $(document).on("click", '.btn-quantity__plus', function () {
     const elem = $(this).siblings('.btn-quantity__value');
     let quantity = parseInt(elem.html());
-    quantity += 1;
+    quantity = quantity + 1;
     state.cart.totalItem = parseInt(state.cart.totalItem) + 1;
     elem.html(quantity);
     storeDataByProductId(this, quantity);
@@ -231,11 +236,12 @@ $(document).on("click", '.btn-quantity__plus', function () {
 $(document).on("click", '.btn-quantity__minus', function () {
     const elem = $(this).siblings('.btn-quantity__value');
     let quantity = parseInt(elem.html());
-    quantity -= 1;
+    quantity = quantity - 1;
     state.cart.totalItem = parseInt(state.cart.totalItem) - 1;
     elem.html(quantity);
 
     if (quantity == 0) {
+
         $(this).hide();
         $(this).siblings().hide();
         $(this).siblings('.btn-quantity__add').css('display', 'flex');
@@ -391,5 +397,4 @@ $(document).ready(function () {
     //load cart and tax information
     getCartInfo();
     getTaxInformation();
-
 });
