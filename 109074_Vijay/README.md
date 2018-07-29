@@ -1,4 +1,4 @@
-#  Online food order App
+#  Online order food App
 ## Technology
 This application is developed using node, npm , HTML5 , ES6,
 
