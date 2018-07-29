@@ -16,9 +16,6 @@ function setLocalStorage() {
                 map.clear();
             }
         };
-
-
-
     });
     afterEach(function () {});
 }

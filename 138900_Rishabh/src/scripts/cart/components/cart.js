@@ -14,7 +14,6 @@ const addToCart = (size, qty, itemid) => {
         "time": new Date().getTime()
     };
     let itemstr = getLocalStorageCartItems();
-    console.log("====>"+itemstr);
     let itemArr;
     if (itemstr === null) {
         itemArr = [];
@@ -89,7 +88,7 @@ const getCartItem = (cartid) => {
 
 const clearCart = () => {
     localStorage.clear();
-}
+};
 
 export const Cart = {
     loadFromCart: loadFromCart,
